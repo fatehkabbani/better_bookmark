@@ -4,10 +4,10 @@ let inputToCreateAFolder = document.getElementById('input_to_create_a_folder');
 chrome.bookmarks.getTree(async (bookmarkTreeNodes) => {
   for (const node of bookmarkTreeNodes) {
     if (node.children) {
-      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
+      bookmarksList.appendChild(createListItem(node.title, null, node.id));
       await addBookmarks(node.children, bookmarksList);
     } else {
-      bookmarksList.appendChild(createListItem(null, null, node.id));
+      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
     }
   }
 });
@@ -18,7 +18,7 @@ async function addBookmarks(bookmarkNodes, parent) {
 
   for (const node of bookmarkNodes) {
     if (node.children) {
-      ul.appendChild(createListItem(node.title));
+      ul.appendChild(createListItem(node.title,node.url ,node.id));
       await addBookmarks(node.children, ul);
     } else {
       ul.appendChild(createListItem(node.title, node.url, node.id));
@@ -119,8 +119,9 @@ async function createNewFolder() {
 }
 // delete bookmark 
 function deleteBookMark() {
-  let bookmarkId = String(this.value)
+  let bookmarkId = String(this.value);
+  console.log(bookmarkId)
   chrome.bookmarks.remove(bookmarkId)
 }
-//fixItNow the bookmark folder button folder return undifined 
+
 //TODO  thing i should do in feature make the user  able to choose the folder 
