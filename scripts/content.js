@@ -1,50 +1,40 @@
+const bookmarksList = document.getElementById('bookmarks-list');
+let inputToCreateAFolder = document.getElementById('input_to_create_a_folder');
 
-chrome.bookmarks.getTree(function (bookmarkTreeNodes) {
-  let bookmarksList = document.getElementById('bookmarks-list');
-
-  bookmarkTreeNodes.forEach(function (node) {
+chrome.bookmarks.getTree(async (bookmarkTreeNodes) => {
+  for (const node of bookmarkTreeNodes) {
     if (node.children) {
-      // If this node has children, recursively add them to the list
-      bookmarksList.appendChild(createListItem(null, null, node.id));
-      addBookmarks(node.children, bookmarksList);
-    } else {
-      // If this node does not have children, add it to the list
       bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
+      await addBookmarks(node.children, bookmarksList);
+    } else {
+      bookmarksList.appendChild(createListItem(null, null, node.id));
     }
-  });
+  }
 });
-function addBookmarks(bookmarkNodes, parent) {
-  let ul = document.createElement('ul');
+
+async function addBookmarks(bookmarkNodes, parent) {
+  const ul = document.createElement('ul');
   parent.appendChild(ul);
 
-  bookmarkNodes.forEach(function (node) {
+  for (const node of bookmarkNodes) {
     if (node.children) {
-      // If this node has children, recursively add them to the list
       ul.appendChild(createListItem(node.title));
-      addBookmarks(node.children, ul);
+      await addBookmarks(node.children, ul);
     } else {
-      // If this node does not have children, add it to the list
       ul.appendChild(createListItem(node.title, node.url, node.id));
     }
-  });
+  }
 }
 function createListItem(title, url, id) {
-  let li = document.createElement('li');
-  let a = document.createElement('a');
-  let button = document.createElement('button');
-  a.href = url;
-  a.textContent = title;
-  button.textContent = "delete";
-  li.setAttribute('class', 'bookmark-item');
-  a.setAttribute('class', 'bookmark-link');
-  button.setAttribute('id', 'delete');
-  button.value = id
-  button.addEventListener('click', deleteBookMark)
-  li.appendChild(a);
-  li.appendChild(button);
-
+  const li = document.createElement('li');
+  li.classList.add('bookmark-item');
+  const a = `<a href="${url}" class="bookmark-link">${title}</a>`;
+  const button = `<button id="delete" value="${id}">delete</button>`;
+  li.innerHTML = `${a}${button}`;
+  li.querySelector('#delete').addEventListener('click', deleteBookMark);
   return li;
 }
+
 // get current tab 
 function getCurrentTab() {
   return new Promise((resolve, reject) => {
@@ -88,7 +78,7 @@ async function getCurrentTabTitle() {
 }
 //Todo to override the extension page :
 
-//! create onclick function to create a folder wehn user click
+//! create onclick function to create a folder when user click
 document.getElementById('create_new_bookmark').addEventListener('click', createNewBookMark)
 async function createNewBookMark() {
   chrome.bookmarks.getTree(async function (bookmarkTreeNodes) {
@@ -107,18 +97,13 @@ async function createNewBookMark() {
     } catch (error) {
       console.log(error);
     }
-
-
   });
 }
-let inputToCreateAFolder = document.getElementById('input_to_create_a_folder')
 document.getElementById('create_new_folder').addEventListener('click', createNewFolder)
 async function createNewFolder() {
   chrome.bookmarks.getTree(async function (bookmarkTreeNodes) {
     let bookmarkBar = bookmarkTreeNodes[0].children[0].id;
     try {
-      let tabTitle = await getCurrentTabTitle();
-      let tabUrl = await getCurrentTabUrl();
       // Create a new folder
       chrome.bookmarks.create({
         'parentId': bookmarkBar,
@@ -134,7 +119,8 @@ async function createNewFolder() {
 }
 // delete bookmark 
 function deleteBookMark() {
-  let bookmarkId = String(this.id)
+  let bookmarkId = String(this.value)
   chrome.bookmarks.remove(bookmarkId)
-  // trying to make it delete the on click
 }
+//fixItNow the bookmark folder button folder return undifined 
+//TODO  thing i should do in feature make the user  able to choose the folder 

@@ -7,4 +7,4 @@
 //     ul.appendChild(li);
 //   }
 // });
-console.log(window.location.href);
+// console.log(window.location.href);

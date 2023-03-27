@@ -11,6 +11,9 @@ li{
     display:flex;
     justify-content: space-between;
 }
+.bookmarks-list{
+    color:red;
+}
 .bookmark-item{
     list-style-type: none;
     margin: 10px;
