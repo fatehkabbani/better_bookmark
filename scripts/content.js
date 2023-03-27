@@ -18,7 +18,7 @@ async function addBookmarks(bookmarkNodes, parent) {
 
   for (const node of bookmarkNodes) {
     if (node.children) {
-      ul.appendChild(createListItem(node.title,node.url ,node.id));
+      ul.appendChild(createListItem(node.title, node.url, node.id));
       await addBookmarks(node.children, ul);
     } else {
       ul.appendChild(createListItem(node.title, node.url, node.id));
@@ -29,9 +29,11 @@ function createListItem(title, url, id) {
   const li = document.createElement('li');
   li.classList.add('bookmark-item');
   const a = `<a href="${url}" class="bookmark-link">${title}</a>`;
-  const button = `<button id="delete" value="${id}">delete</button>`;
-  li.innerHTML = `${a}${button}`;
+  const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
+  const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
+  li.innerHTML = `${a} ${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
+  li.querySelector('#edit').addEventListener('click', updateBookmarkOrFolder);
   return li;
 }
 
@@ -124,4 +126,22 @@ function deleteBookMark() {
   chrome.bookmarks.remove(bookmarkId)
 }
 
-//TODO  thing i should do in feature make the user  able to choose the folder 
+//TODO  thing i should do in feature make the user  able to choose the folder and add file to it and folder etc....
+//TODO update changes (user change's (url , title))
+function susscefullEditBookMark(bookMarkOrFolder) {
+  console.log(bookMarkOrFolder.title)
+}
+function rejectedEditBookMark() {
+  console.log(`ERROR: ${error}`)
+}
+function updateBookmarkOrFolder() {
+  let bookMarkId = this.value
+  chrome.bookmarks.update(bookMarkId, {
+    title: "hello world"
+  })
+    .then(
+      susscefullEditBookMark,
+      rejectedEditBookMark
+    )
+}
+//fixItNow got edit button to work now make it display a input when user click on it 
