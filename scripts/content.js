@@ -5,11 +5,11 @@ chrome.bookmarks.getTree(function (bookmarkTreeNodes) {
   bookmarkTreeNodes.forEach(function (node) {
     if (node.children) {
       // If this node has children, recursively add them to the list
-      bookmarksList.appendChild(createListItem(node.title));
+      bookmarksList.appendChild(createListItem(null, null, node.id));
       addBookmarks(node.children, bookmarksList);
     } else {
       // If this node does not have children, add it to the list
-      bookmarksList.appendChild(createListItem(node.title, node.url));
+      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
     }
   });
 });
@@ -24,11 +24,11 @@ function addBookmarks(bookmarkNodes, parent) {
       addBookmarks(node.children, ul);
     } else {
       // If this node does not have children, add it to the list
-      ul.appendChild(createListItem(node.title, node.url));
+      ul.appendChild(createListItem(node.title, node.url, node.id));
     }
   });
 }
-function createListItem(title, url) {
+function createListItem(title, url, id) {
   let li = document.createElement('li');
   let a = document.createElement('a');
   let button = document.createElement('button');
@@ -37,7 +37,9 @@ function createListItem(title, url) {
   button.textContent = "delete";
   li.setAttribute('class', 'bookmark-item');
   a.setAttribute('class', 'bookmark-link');
-  button.setAttribute('id', 'delete')
+  button.setAttribute('id', 'delete');
+  button.value = id
+  button.addEventListener('click', deleteBookMark)
   li.appendChild(a);
   li.appendChild(button);
 
@@ -131,3 +133,8 @@ async function createNewFolder() {
   })
 }
 // delete bookmark 
+function deleteBookMark() {
+  let bookmarkId = String(this.id)
+  chrome.bookmarks.remove(bookmarkId)
+  // trying to make it delete the on click
+}
