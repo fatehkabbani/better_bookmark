@@ -134,14 +134,26 @@ function susscefullEditBookMark(bookMarkOrFolder) {
 function rejectedEditBookMark() {
   console.log(`ERROR: ${error}`)
 }
+
 function updateBookmarkOrFolder() {
   let bookMarkId = this.value
   chrome.bookmarks.update(bookMarkId, {
-    title: "hello world"
+    title: ,
   })
     .then(
       susscefullEditBookMark,
       rejectedEditBookMark
     )
 }
-//fixItNow got edit button to work now make it display a input when user click on it 
+// create input and dispaly it when user press edit
+function editButtonInput() {
+  let editButton = document.createElement('input');
+  let submitButton = document.createElement('button');
+  submitButton.textContent = "submit";
+  submitButton.value = editButton
+  submitButton.setAttribute('onclick', 'inputEdit')
+  document.body.appendChild(editButton);
+  document.body.appendChild(submitButton);
+  return submitButton
+}
+//fixItNow got edit button to work now make it display a input when user click on it   
