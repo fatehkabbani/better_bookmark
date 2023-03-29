@@ -33,7 +33,7 @@ function createListItem(title, url, id) {
   const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
   li.innerHTML = `${a} ${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
-  li.querySelector('#edit').addEventListener('click', updateBookmarkOrFolder);
+  li.querySelector('#edit').addEventListener('click', createElement);
   return li;
 }
 
@@ -126,7 +126,6 @@ function deleteBookMark() {
   chrome.bookmarks.remove(bookmarkId)
 }
 
-//TODO  thing i should do in feature make the user  able to choose the folder and add file to it and folder etc....
 //TODO update changes (user change's (url , title))
 function susscefullEditBookMark(bookMarkOrFolder) {
   console.log(bookMarkOrFolder.title)
@@ -138,22 +137,29 @@ function rejectedEditBookMark() {
 function updateBookmarkOrFolder() {
   let bookMarkId = this.value
   chrome.bookmarks.update(bookMarkId, {
-    title: ,
+    title: getDataFromInput(),
   })
     .then(
       susscefullEditBookMark,
       rejectedEditBookMark
     )
 }
-// create input and dispaly it when user press edit
-function editButtonInput() {
-  let editButton = document.createElement('input');
-  let submitButton = document.createElement('button');
-  submitButton.textContent = "submit";
-  submitButton.value = editButton
-  submitButton.setAttribute('onclick', 'inputEdit')
-  document.body.appendChild(editButton);
-  document.body.appendChild(submitButton);
-  return submitButton
+function createElement() {
+  const input = document.createElement('input');
+  const button = document.createElement('button');
+  // button.setAttribute('type',"submit");
+  button.setAttribute('id', 'submit');
+  input.setAttribute('type', 'text');
+  input.setAttribute('id', 'input_to_create_a_folder');
+  document.body.appendChild(input);
+  document.body.appendChild(button);
+  return input
+}
+
+// retrive the data from createElementm 
+function getDataFromInput() {
+  let input = document.getElementById('input_to_create_a_folder');
+  return input.value
 }
 //fixItNow got edit button to work now make it display a input when user click on it   
+//TODO i should restrucer the whole code
