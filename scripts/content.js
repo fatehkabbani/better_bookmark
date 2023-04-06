@@ -29,16 +29,14 @@ function createListItem(title, url, id) {
   const a = `<a href="${url ? url : "#"}" class="bookmark-link">${title}</a>`;
   const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
   const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
-  const image = `<img src="https://s2.googleusercontent.com/s2/favicons?domain=${url}" alt="image">`;
-
+  const image = `<img src="${url ? "https://s2.googleusercontent.com/s2/favicons?domain=" + url : "icon/open-folder.png"} " alt="image" class="no-image">`;
+  
   li.innerHTML = `${image}${a}${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
   li.querySelector('#edit').addEventListener('click', createElement);
   return li;
 }
-function imageFunction() {
-  this.src = './icon/open-folder.png';
-}
+
 // get current tab 
 function getCurrentTab() {
   return new Promise((resolve, reject) => {

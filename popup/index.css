@@ -23,6 +23,11 @@ li{
 .bookmarks-list{
     color:red;
 }
+.no-image{
+    width:21px;
+    height:21px;
+
+}
 .bookmark-item{
     list-style-type: none;
     margin: 10px;
