@@ -1,12 +1,11 @@
 const bookmarksList = document.getElementById('bookmarks-list');
 let inputToCreateAFolder = document.getElementById('input_to_create_a_folder');
-
 chrome.bookmarks.getTree(async (bookmarkTreeNodes) => {
   for (const node of bookmarkTreeNodes) {
     if (node.children) {
-      bookmarksList.appendChild(createListItem(node.title, null, node.id));
       await addBookmarks(node.children, bookmarksList);
-    } else {
+    }
+    else {
       bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
     }
   }
@@ -25,18 +24,23 @@ async function addBookmarks(bookmarkNodes, parent) {
     }
   }
 }
+
 function createListItem(title, url, id) {
   const li = document.createElement('li');
   li.classList.add('bookmark-item');
   const a = `<a href="${url}" class="bookmark-link">${title}</a>`;
   const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
   const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
-  li.innerHTML = `${a} ${buttonEdit}${buttonDelete}`;
+  const image = `<img src="https://s2.googleusercontent.com/s2/favicons?domain=${url}" alt="image">`;
+
+  li.innerHTML = `${image}${a} ${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
   li.querySelector('#edit').addEventListener('click', createElement);
   return li;
 }
-
+function imageFunction() {
+  this.src = './icon/open-folder.png';
+}
 // get current tab 
 function getCurrentTab() {
   return new Promise((resolve, reject) => {
@@ -105,61 +109,85 @@ document.getElementById('create_new_folder').addEventListener('click', createNew
 async function createNewFolder() {
   chrome.bookmarks.getTree(async function (bookmarkTreeNodes) {
     let bookmarkBar = bookmarkTreeNodes[0].children[0].id;
-    try {
-      // Create a new folder
-      chrome.bookmarks.create({
-        'parentId': bookmarkBar,
-        'title': inputToCreateAFolder.value
-      }, function (newFolder) {
-        console.log("Added folder: " + newFolder.title);
-      });
-
-    } catch (error) {
-      console.log(error)
-    }
+    chrome.bookmarks.create({
+      'parentId': bookmarkBar,
+      'title': inputToCreateAFolder.value
+    }, function (newFolder) {
+      console.log("Added folder: " + newFolder.title);
+    });
   })
 }
 // delete bookmark 
 function deleteBookMark() {
   let bookmarkId = String(this.value);
-  console.log(bookmarkId)
   chrome.bookmarks.remove(bookmarkId)
 }
 
 //TODO update changes (user change's (url , title))
+
+function createElement(event) {
+  const id = event.target.value;
+  const listItem = event.target.closest('li');
+  const link = listItem.querySelector('.bookmark-link');
+  const title = link.innerText;
+  const url = link.href;
+
+  // Create input fields for editing the bookmark title and URL
+  const titleInput = document.createElement('input');
+  titleInput.type = 'text';
+  titleInput.placeholder = 'Title';
+  titleInput.value = title;
+
+  const urlInput = document.createElement('input');
+  urlInput.type = 'text';
+  urlInput.placeholder = 'URL';
+  urlInput.value = url;
+
+  // Create a submit button for saving the changes
+  const saveButton = document.createElement('button');
+  saveButton.innerText = 'Save';
+  saveButton.addEventListener('click', async () => {
+    const newTitle = titleInput.value;
+    const newUrl = urlInput.value;
+
+    // Update the bookmark with the new title and URL
+    const updatedBookmark = await chrome.bookmarks.update(id, { title: newTitle, url: newUrl });
+
+    // Update the link text and href in the list item
+    link.innerText = updatedBookmark.title;
+    link.href = updatedBookmark.url;
+
+    // Remove the input fields and submit button
+    listItem.removeChild(titleInput);
+    listItem.removeChild(urlInput);
+    listItem.removeChild(saveButton);
+  });
+
+  // Append the input fields and submit button to the list item
+  listItem.appendChild(titleInput);
+  listItem.appendChild(urlInput);
+  listItem.appendChild(saveButton);
+}
+
+// get user input
+function getUserInput() {
+  let userInput = document.getElementById('input_to_create_a_folder').value;
+  return userInput
+}
+// edit bookmark
+// TODO make it work
+// suucessfull edit bookmark
 function susscefullEditBookMark(bookMarkOrFolder) {
   console.log(bookMarkOrFolder.title)
 }
+// rejected edit bookmark
 function rejectedEditBookMark() {
-  console.log(`ERROR: ${error}`)
+  console.log(`ERROR: ${this} unable to edit bookmark or folder`)
 }
-
-function updateBookmarkOrFolder() {
-  let bookMarkId = this.value
-  chrome.bookmarks.update(bookMarkId, {
-    title: getDataFromInput(),
-  })
-    .then(
-      susscefullEditBookMark,
-      rejectedEditBookMark
-    )
+// edit bookmark function
+function updateBookmarkOrFolder(id) {
+  let userInput = getUserInput();
+  let bookmarkId = String(this.value);
+  chrome.bookmarks.update(bookmarkId, { title: userInput }, susscefullEditBookMark, rejectedEditBookMark)
 }
-function createElement() {
-  const input = document.createElement('input');
-  const button = document.createElement('button');
-  // button.setAttribute('type',"submit");
-  button.setAttribute('id', 'submit');
-  input.setAttribute('type', 'text');
-  input.setAttribute('id', 'input_to_create_a_folder');
-  document.body.appendChild(input);
-  document.body.appendChild(button);
-  return input
-}
-
-// retrive the data from createElementm 
-function getDataFromInput() {
-  let input = document.getElementById('input_to_create_a_folder');
-  return input.value
-}
-//fixItNow got edit button to work now make it display a input when user click on it   
-//TODO i should restrucer the whole code
+//ERROR: fonud the error i was using this.value and i'm getitng [object HTMLButtonElement]

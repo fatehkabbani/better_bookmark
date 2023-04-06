@@ -6,12 +6,19 @@
   "action": {
     "default_popup": "popup/index.html"
   },
-  "permissions": ["tabs", "activeTab", "bookmarks"],
+  "permissions": ["tabs", "activeTab", "bookmarks", "favicon"],
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
       "matches": ["<all_urls>"],
       "persistent": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["_favicon/*"],
+      "matches": ["<all_urls>"],
+      "extension_ids": ["*"]
     }
   ],
   "chrome_url_overrides": {
