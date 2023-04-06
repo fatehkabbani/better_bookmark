@@ -13,14 +13,12 @@ chrome.bookmarks.getTree(async (bookmarkTreeNodes) => {
 
 async function addBookmarks(bookmarkNodes, parent) {
   const ul = document.createElement('ul');
-  parent.appendChild(ul);
-
   for (const node of bookmarkNodes) {
     if (node.children) {
-      ul.appendChild(createListItem(node.title, node.url, node.id));
-      await addBookmarks(node.children, ul);
+      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
+      await addBookmarks(node.children, bookmarksList);
     } else {
-      ul.appendChild(createListItem(node.title, node.url, node.id));
+      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
     }
   }
 }
@@ -28,12 +26,12 @@ async function addBookmarks(bookmarkNodes, parent) {
 function createListItem(title, url, id) {
   const li = document.createElement('li');
   li.classList.add('bookmark-item');
-  const a = `<a href="${url}" class="bookmark-link">${title}</a>`;
+  const a = `<a href="${url ? url : "#"}" class="bookmark-link">${title}</a>`;
   const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
   const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
   const image = `<img src="https://s2.googleusercontent.com/s2/favicons?domain=${url}" alt="image">`;
 
-  li.innerHTML = `${image}${a} ${buttonEdit}${buttonDelete}`;
+  li.innerHTML = `${image}${a}${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
   li.querySelector('#edit').addEventListener('click', createElement);
   return li;
@@ -190,4 +188,3 @@ function updateBookmarkOrFolder(id) {
   let bookmarkId = String(this.value);
   chrome.bookmarks.update(bookmarkId, { title: userInput }, susscefullEditBookMark, rejectedEditBookMark)
 }
-//ERROR: fonud the error i was using this.value and i'm getitng [object HTMLButtonElement]
