@@ -11,26 +11,45 @@ chrome.bookmarks.getTree(async (bookmarkTreeNodes) => {
   }
 });
 
+// Recursively add bookmarks to the parent element
 async function addBookmarks(bookmarkNodes, parent) {
-  const ul = document.createElement('ul');
   for (const node of bookmarkNodes) {
     if (node.children) {
-      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
-      await addBookmarks(node.children, bookmarksList);
+      // If the node is a folder, create a new details element for it
+      const details = document.createElement('details');
+      details.classList.add('bookmark-item');
+      const summary = document.createElement('summary');
+      summary.classList.add('bookmark-link');
+      summary.innerText = node.title;
+      details.appendChild(summary);
+
+      // Create a new ul element to store the bookmarks inside the folder
+      const ul = document.createElement('ul');
+      await addBookmarks(node.children, ul);
+
+      // Append the ul element to the details element
+      details.appendChild(ul);
+
+      // Append the details element to the parent element
+      parent.appendChild(details);
     } else {
-      bookmarksList.appendChild(createListItem(node.title, node.url, node.id));
+      // If the node is a bookmark, create a new li element for it
+      parent.appendChild(createListItem(node.title, node.url, node.id));
     }
   }
 }
 
 function createListItem(title, url, id) {
+  // if it's folder make it a details make the bookmark inside the details
+
+
   const li = document.createElement('li');
   li.classList.add('bookmark-item');
   const a = `<a href="${url ? url : "#"}" class="bookmark-link">${title}</a>`;
   const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
   const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
   const image = `<img src="${url ? "https://s2.googleusercontent.com/s2/favicons?domain=" + url : "icon/open-folder.png"} " alt="image" class="no-image">`;
-  
+
   li.innerHTML = `${image}${a}${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
   li.querySelector('#edit').addEventListener('click', createElement);
@@ -127,7 +146,6 @@ function createElement(event) {
   const link = listItem.querySelector('.bookmark-link');
   const title = link.innerText;
   const url = link.href;
-
   // Create input fields for editing the bookmark title and URL
   const titleInput = document.createElement('input');
   titleInput.type = 'text';

@@ -24,8 +24,8 @@ li{
     color:red;
 }
 .no-image{
-    width:21px;
-    height:21px;
+    width:16px;
+    height:16px;
 
 }
 .bookmark-item{
@@ -41,4 +41,8 @@ li{
 a{
     text-decoration: none;
     color: black;
+}
+details{
+    cursor:pointer;
+    user-select: none;
 }
