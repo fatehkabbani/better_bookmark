@@ -32,7 +32,6 @@ li{
     list-style-type: none;
     margin: 10px;
     padding: 10px;
-    border: 1px solid black;
     border-radius: 5px;
     width:100vw;
     max-width:100%;  /* added */
@@ -45,4 +44,9 @@ a{
 details{
     cursor:pointer;
     user-select: none;
+}
+.no-image{
+    width:16px;
+    height:16px;
+    float:right;
 }

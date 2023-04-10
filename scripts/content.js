@@ -21,6 +21,11 @@ async function addBookmarks(bookmarkNodes, parent) {
       const summary = document.createElement('summary');
       summary.classList.add('bookmark-link');
       summary.innerText = node.title;
+      const image = document.createElement('img');
+      image.src = "icon/open-folder.png";
+      image.alt = "image";
+      image.classList.add('no-image');
+      summary.appendChild(image);
       details.appendChild(summary);
 
       // Create a new ul element to store the bookmarks inside the folder
@@ -29,9 +34,12 @@ async function addBookmarks(bookmarkNodes, parent) {
 
       // Append the ul element to the details element
       details.appendChild(ul);
-
+    // add image to details folder 
+    
       // Append the details element to the parent element
+
       parent.appendChild(details);
+      
     } else {
       // If the node is a bookmark, create a new li element for it
       parent.appendChild(createListItem(node.title, node.url, node.id));
@@ -49,7 +57,6 @@ function createListItem(title, url, id) {
   const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
   const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
   const image = `<img src="${url ? "https://s2.googleusercontent.com/s2/favicons?domain=" + url : "icon/open-folder.png"} " alt="image" class="no-image">`;
-
   li.innerHTML = `${image}${a}${buttonEdit}${buttonDelete}`;
   li.querySelector('#delete').addEventListener('click', deleteBookMark);
   li.querySelector('#edit').addEventListener('click', createElement);
