@@ -22,45 +22,8 @@
     <script src="es5.js"></script>
     <script src="/scripts/content.js"></script>
     <!-- header animaiton using https://www.finisher.co/lab/header/ -->
-    <script type="text/javascript">
-        new FinisherHeader({
-            "count": 45,
-            "size": {
-                "min": 1,
-                "max": 8,
-                "pulse": 0
-            },
-            "speed": {
-                "x": {
-                    "min": 0,
-                    "max": 5
-                },
-                "y": {
-                    "min": 0,
-                    "max": 5
-                }
-            },
-            "colors": {
-                "background": "#15182e",
-                "particles": [
-                    "#ff926b",
-                    "#87ddfe",
-                    "#acaaff",
-                    "#1bffc2",
-                    "#f9a5fe"
-                ]
-            },
-            "blending": "screen",
-            "opacity": {
-                "center": 1,
-                "edge": 1
-            },
-            "skew": -0.3,
-            "shapes": [
-                "s"
-            ]
-        });
-    </script>
+    <!-- well inline script violet t violates the following Content Security Policy directive: "script-src 'self'". Either the 'unsafe-inline' keyword, -->
+    <script src="animation.js"></script>
 </body>
 
 </html>
