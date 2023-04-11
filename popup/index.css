@@ -33,6 +33,11 @@ summary{
     list-style: none;
     padding-left: 20px;
     padding-top: 9px;
+    display:flex;
+    justify-content:space-around;
+}
+.bookmark-item span {
+    width: 50%; 
 }
 
 a {
@@ -49,5 +54,10 @@ details[open] {
 }
 .detailspTag{
     display:inline;
-
 }
+.buttons{
+    display:flex;
+    justify-content: flex-end;
+    margin-right:50px;
+}
+
