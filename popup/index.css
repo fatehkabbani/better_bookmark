@@ -1,5 +1,5 @@
-::root{
-
+*{
+    border:1px solid black;
 }
 body{
     margin:0;
@@ -10,4 +10,14 @@ body{
 .no-image{
     height:16px;
     width:16px;
+    float:right;
+}
+#edit{
+    
+}
+#edit:hover{
+    background-color: #e6e6e6;
+}
+.bookmark-item{
+    list-style: none;
 }

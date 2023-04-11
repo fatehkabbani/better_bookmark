@@ -11,13 +11,56 @@
 
 
 <body>
-    <div class="container">
-        <ul id="bookmarks-list"></ul>
-    </div>
+    <div class="header finisher-header" style="width: 100%; height: 300px;">
+        <div class="container">
+            <div id="bookmarks-list"></div>
+        </div>
         <button id="create_new_bookmark">create a bookmark</button>
         <button id="create_new_folder">create a folder</button>
         <input id="input_to_create_a_folder" autocomplete="off" required />
-        <script src="/scripts/content.js"></script>
+    </div>
+    <script src="es5.js"></script>
+    <script src="/scripts/content.js"></script>
+    <!-- header animaiton using https://www.finisher.co/lab/header/ -->
+    <script type="text/javascript">
+        new FinisherHeader({
+            "count": 45,
+            "size": {
+                "min": 1,
+                "max": 8,
+                "pulse": 0
+            },
+            "speed": {
+                "x": {
+                    "min": 0,
+                    "max": 5
+                },
+                "y": {
+                    "min": 0,
+                    "max": 5
+                }
+            },
+            "colors": {
+                "background": "#15182e",
+                "particles": [
+                    "#ff926b",
+                    "#87ddfe",
+                    "#acaaff",
+                    "#1bffc2",
+                    "#f9a5fe"
+                ]
+            },
+            "blending": "screen",
+            "opacity": {
+                "center": 1,
+                "edge": 1
+            },
+            "skew": -0.3,
+            "shapes": [
+                "s"
+            ]
+        });
+    </script>
 </body>
 
 </html>
