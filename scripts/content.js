@@ -18,14 +18,20 @@ async function addBookmarks(bookmarkNodes, parent) {
       // If the node is a folder, create a new details element for it
       const details = document.createElement('details');
       details.classList.add('bookmark-item');
+      // force open the details (folder)
+      details.setAttribute('open', 'true');
+      // #############################################
       const summary = document.createElement('summary');
-      summary.classList.add('bookmark-link');
-      summary.innerText = node.title;
       const image = document.createElement('img');
+      const pTag = document.createElement('p');
+      summary.classList.add('bookmark-link');
+      summary.appendChild(image);
+      pTag.innerText = node.title;
+      summary.appendChild(pTag);
+      pTag.classList.add('detailspTag');
       image.src = "icon/open-folder.png";
       image.alt = "image";
       image.classList.add('no-image');
-      summary.appendChild(image);
       details.appendChild(summary);
 
       // Create a new ul element to store the bookmarks inside the folder
