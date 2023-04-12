@@ -57,8 +57,8 @@ function createListItem(title, url, id) {
   const li = document.createElement("li");
   li.classList.add("bookmark-item");
   const a = `<a href="${url ? url : "#"}" class="bookmark-link">${title}</a>`;
-  const buttonDelete = `<button id="delete" value="${id}">delete</button>`;
-  const buttonEdit = `<button id="edit" value="${id}">edit</button>`;
+  const buttonDelete = `<button id="delete" class="buttonsCollection"value="${id}">delete</button>`;
+  const buttonEdit = `<button id="edit" class="buttonsCollection" value="${id}">edit</button>`;
   const image = `<img src="${
     url
       ? "https://s2.googleusercontent.com/s2/favicons?domain=" + url
@@ -69,7 +69,7 @@ function createListItem(title, url, id) {
   li.querySelector("#edit").addEventListener("click", createElement);
   return li;
 }
-// TODO make the edit a popup 
+// TODO make the edit a popup
 // get current tab
 function getCurrentTab() {
   return new Promise((resolve, reject) => {
@@ -110,7 +110,7 @@ async function getCurrentTabTitle() {
     console.log(error);
   }
 }
-//Todo to override the extension page :
+
 
 //! create onclick function to create a folder when user click
 document
@@ -161,7 +161,7 @@ function deleteBookMark() {
   chrome.bookmarks.remove(bookmarkId);
 }
 
-//TODO update changes (user change's (url , title))
+
 
 function createElement(event) {
   const id = event.target.value;
@@ -207,6 +207,8 @@ function createElement(event) {
   listItem.appendChild(titleInput);
   listItem.appendChild(urlInput);
   listItem.appendChild(saveButton);
+  // make the button edit dispaiper when edit is pressed 
+  document.getElementById('edit').style.display = 'none';
 }
 
 // get user input
@@ -215,7 +217,6 @@ function getUserInput() {
   return userInput;
 }
 // edit bookmark
-// TODO make it work
 // suucessfull edit bookmark
 function susscefullEditBookMark(bookMarkOrFolder) {
   console.log(bookMarkOrFolder.title);

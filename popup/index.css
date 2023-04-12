@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .no-image {
@@ -18,46 +18,68 @@ body {
     float: center;
 }
 
-#edit:hover {
-    background-color: #e6e6e6;
-}
 
 details {
     cursor: pointer;
 }
-summary{
-    display:flex;
-    align-items:center;
+
+summary {
+    display: flex;
+    align-items: center;
 }
+
 .bookmark-item {
     list-style: none;
     padding-left: 20px;
     padding-top: 9px;
-    display:flex;
-    justify-content:space-around;
+    display: flex;
+    justify-content: space-around;
+    font-size:20px;
 }
+
 .bookmark-item span {
-    width: 50%; 
+    width: 50%;
 }
 
 a {
     text-decoration: none;
-    color:inherit;
+    color: inherit;
 }
 
-details > summary{
+details>summary {
     list-style: none;
 }
 
 details[open] {
     /* background-color:red; */
 }
-.detailspTag{
-    display:inline;
+
+.detailspTag {
+    display: inline;
 }
-.buttons{
-    display:flex;
+
+.buttons {
+    display: flex;
     justify-content: flex-end;
     margin-right:50px;
 }
+.buttonsCollection{
+    font-size:1em;
+    background:transparent; 
+    border:.2px black solid;
+    border-radius: 5px;
+}
+.buttonsCollection:hover {
+    background-color: #e6e6e6;
+    cursor:pointer;
+}
+#edit {
+    padding: 10px 20px;
+    margin-right: 20px;
 
+}
+
+#delete {
+    padding: 10px 20px;
+
+}
